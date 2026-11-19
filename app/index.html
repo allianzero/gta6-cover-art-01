@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vice Cover Studio — GTA 6 Cover Art Maker</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>VICE COVER STUDIO</h1>
+    <p>Turn your photo and a caption into GTA 6-style cover art. Works offline — your photos never leave this machine.</p>
+  </div>
+  <p class="tag">1080 × 1080 · 1080 × 1350 · 1920 × 1080 PNG</p>
+</header>
+<main class="app">
+  <section class="controls" aria-label="Cover controls">
+    <h2>1 · Photos</h2>
+    <div class="row">
+      <button id="uploadBtn" type="button">Upload a photo</button>
+      <button id="demoBtn" type="button" class="ghost">Load demo photos</button>
+    </div>
+    <input id="fileInput" type="file" accept="image/*" hidden>
+    <div id="samples" class="samples" aria-label="Sample photos">
+      <button type="button" data-sample="vice-dude.jpg"><img src="samples/vice-dude.jpg" alt="Sample: man on a neon street at dusk"></button>
+      <button type="button" data-sample="vice-gal.jpg"><img src="samples/vice-gal.jpg" alt="Sample: woman on a boardwalk at sunset"></button>
+      <button type="button" data-sample="vice-ride.jpg"><img src="samples/vice-ride.jpg" alt="Sample: man driving a pink convertible at sunset"></button>
+    </div>
+    <p class="note">Click a sample to drop it into the selected panel, or upload your own. Drag on the preview to move a photo, scroll to zoom.</p>
+    <div id="slots" class="slots" aria-label="Panels"></div>
+    <p id="slotHint" class="note"></p>
+    <div class="row">
+      <label class="zoom">Zoom <input id="zoomRange" type="range" min="1" max="3" step="0.05" value="1"></label>
+    </div>
+    <div class="row">
+      <button id="flipBtn" type="button" class="ghost">Flip photo</button>
+      <button id="fillAllBtn" type="button" class="ghost">Fill all panels</button>
+      <button id="clearBtn" type="button" class="ghost">Clear panel</button>
+    </div>
+
+    <h2>2 · Layout</h2>
+    <div class="pick" role="group" aria-label="Panel layout">
+      <button type="button" data-layout="hero">Hero + duo</button>
+      <button type="button" data-layout="strip">Tall + stack</button>
+      <button type="button" data-layout="grid">Four up</button>
+      <button type="button" data-layout="solo">One shot</button>
+    </div>
+
+    <h2>3 · Colour grade</h2>
+    <div class="pick" role="group" aria-label="Colour grade">
+      <button type="button" data-grade="sunset">Sunset</button>
+      <button type="button" data-grade="neon">Neon</button>
+      <button type="button" data-grade="noir">Noir</button>
+      <button type="button" data-grade="vivid">Vivid</button>
+      <button type="button" data-grade="original">Original</button>
+    </div>
+
+    <h2>4 · Lettering</h2>
+    <div class="pick" role="group" aria-label="Lettering style">
+      <button type="button" data-lettering="sunset">Sunset Pop</button>
+      <button type="button" data-lettering="neon">Neon Nights</button>
+      <button type="button" data-lettering="gold">Vice Gold</button>
+    </div>
+
+    <h2>5 · Caption</h2>
+    <label class="field">Title
+      <input id="titleInput" type="text" maxlength="40" value="NEON NIGHTS">
+    </label>
+    <label class="field">Subtitle
+      <input id="subtitleInput" type="text" maxlength="48" value="OCEAN DRIVE AFTER DARK">
+    </label>
+
+    <h2>6 · Size &amp; export</h2>
+    <div class="pick" role="group" aria-label="Export size">
+      <button type="button" data-size="square">Square 1080²</button>
+      <button type="button" data-size="portrait">Portrait 1080×1350</button>
+      <button type="button" data-size="wide">Wide 1920×1080</button>
+    </div>
+    <button id="exportBtn" type="button" class="export">Export PNG</button>
+    <p id="status" role="status">Pick a layout, load a photo, export your cover.</p>
+    <p id="err" role="alert"></p>
+  </section>
+
+  <section class="stage" aria-label="Live preview">
+    <canvas id="preview" width="860" height="860" aria-label="Live cover preview"></canvas>
+  </section>
+</main>
+<pre id="selftest" hidden></pre>
+<script type="module" src="./src/editor.js"></script>
+</body>
+</html>

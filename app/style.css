@@ -1,0 +1,189 @@
+/* Vice Cover Studio — editor chrome. The cover itself is drawn on canvas. */
+@font-face {
+  font-family: "ViceDisplay";
+  src: url("../fonts/NotoSans-CondensedBlack.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ViceBold";
+  src: url("../fonts/NotoSans-CondensedBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: #14041f;
+  color: #f5e9ff;
+  font-family: "ViceBold", "Arial Narrow", system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  padding: 20px 28px 12px;
+  border-bottom: 2px solid #ff2e88;
+  background: linear-gradient(100deg, #1c0b2e 0%, #5c1a63 55%, #8a2a6d 100%);
+}
+.top h1 {
+  margin: 0;
+  font-family: "ViceDisplay", "Arial Narrow", sans-serif;
+  font-size: 42px;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 3px 3px 0 #ff2e88, 6px 6px 0 rgba(0, 0, 0, 0.35);
+}
+.top p { margin: 6px 0 0; color: #ffd7ec; font-size: 14px; }
+.top .tag {
+  margin: 0;
+  white-space: nowrap;
+  color: #ffe45c;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 0;
+  align-items: start;
+}
+.controls {
+  padding: 18px 20px 28px;
+  background: #1d0a2e;
+  border-right: 1px solid #3d1650;
+}
+.controls h2 {
+  margin: 20px 0 8px;
+  font-family: "ViceDisplay", sans-serif;
+  font-size: 17px;
+  letter-spacing: 2px;
+  color: #ffb3d9;
+}
+.controls h2:first-child { margin-top: 0; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.note { color: #c9a8dd; font-size: 13px; line-height: 1.45; margin: 8px 0; }
+
+button {
+  font-family: inherit;
+  font-size: 14px;
+  color: #fff;
+  background: #ff2e88;
+  border: 2px solid #ff2e88;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+button:hover { background: #ff4d9a; }
+button.ghost { background: transparent; color: #ffb3d9; border-color: #7a3a9e; }
+button.ghost:hover { border-color: #ff2e88; color: #fff; }
+button:disabled { opacity: 0.4; cursor: default; }
+button.active { background: #ffe45c; border-color: #ffe45c; color: #241300; }
+
+.samples { display: flex; gap: 8px; margin-top: 10px; }
+.samples button { padding: 0; border: 2px solid #3d1650; overflow: hidden; background: none; }
+.samples button:hover { border-color: #ff2e88; }
+.samples img { display: block; width: 84px; height: 120px; object-fit: cover; }
+
+.slots { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.slot {
+  text-align: left;
+  background: #2a1150;
+  border: 2px solid #3d1650;
+  color: #e9d4ff;
+}
+.slot.selected { border-color: #ffe45c; color: #fff; }
+
+.zoom { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.zoom input { flex: 1; accent-color: #ff2e88; }
+
+.pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.pick button { background: #2a1150; border-color: #3d1650; font-size: 13px; padding: 7px 10px; }
+.pick button.active { background: #ffe45c; border-color: #ffe45c; color: #241300; }
+
+.field { display: block; font-size: 14px; color: #c9a8dd; margin-bottom: 10px; }
+.field input {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px 10px;
+  font-family: inherit;
+  font-size: 15px;
+  color: #fff;
+  background: #14041f;
+  border: 2px solid #3d1650;
+  border-radius: 6px;
+}
+.field input:focus { outline: none; border-color: #ff2e88; }
+
+.export {
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px;
+  font-size: 17px;
+  font-family: "ViceDisplay", sans-serif;
+  letter-spacing: 2px;
+  background: #ffe45c;
+  border-color: #ffe45c;
+  color: #241300;
+}
+.export:hover { background: #ffef8a; }
+
+#status { color: #9be8ff; font-size: 13px; min-height: 18px; }
+#err { color: #ff7a7a; font-size: 13px; }
+#selftest { display: none; }
+
+.stage {
+  padding: 22px;
+  display: flex;
+  justify-content: center;
+  background:
+    radial-gradient(700px 420px at 70% 0%, rgba(255, 46, 136, 0.22), transparent 70%),
+    radial-gradient(600px 500px at 10% 100%, rgba(255, 138, 61, 0.16), transparent 70%),
+    #14041f;
+}
+#preview {
+  max-width: 100%;
+  max-height: calc(100vh - 150px);
+  width: auto;
+  height: auto;
+  border: 2px solid #3d1650;
+  border-radius: 4px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+  cursor: grab;
+  touch-action: none;
+  background: #160a33;
+}
+#preview:active { cursor: grabbing; }
+
+/* Screenshot mode: cover alone, edge to edge. */
+body.shot-cover { background: #160a33; }
+body.shot-cover .top,
+body.shot-cover .controls,
+body.shot-cover #selftest { display: none; }
+body.shot-cover .app { display: block; }
+body.shot-cover .stage { padding: 0; background: #160a33; }
+body.shot-cover #preview {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  object-fit: contain;
+}
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .controls { border-right: 0; border-bottom: 1px solid #3d1650; }
+  .top { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .top h1 { font-size: 32px; }
+}
